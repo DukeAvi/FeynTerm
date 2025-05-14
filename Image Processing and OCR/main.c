@@ -3,7 +3,7 @@
 #include "img_processing.c"
 
 int main() {
-    const char* pdf_input = "PES2UG24CS116_Bhuvan_MS.pdf";
+    const char* pdf_input = "input.pdf";
     
     int page_count = get_pdf_page_count(pdf_input);
     if (page_count <= 0) {

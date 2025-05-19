@@ -1,17 +1,21 @@
 #include <stdio.h>
 #include "img_processing.h"
-#include "img_processing.c"
+#include "character_segmentation.h"
+
+int file_count = 0;
+int line_count = 0;
+int word_count = 0;
 
 int main() {
-    const char* pdf_input = "input.pdf";
+    const char* pdf_input = "sample.pdf";
     
-    int page_count = get_pdf_page_count(pdf_input);
-    if (page_count <= 0) {
+    file_count = get_pdf_page_count(pdf_input);
+    if (file_count <= 0) {
         printf("Couldn't determine page count\n");
         return 1;
     }
     
-    if (!render_pdf_pages_to_png(pdf_input, page_count)) {
+    if (!render_pdf_pages_to_png(pdf_input)) {
         printf("Rendering failed\n");
         return 1;
     }
@@ -20,6 +24,9 @@ int main() {
         printf("Conversion failed\n");
         return 1;
     }
+
+    line_segmentation();
+    word_segmentation();
     
     printf("Program Successful\n");
     return 0;

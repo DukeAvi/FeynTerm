@@ -1,8 +1,13 @@
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 #include "img_processing.h"
+
+extern int file_count;
 
 //Computes the number of pages in a given PDF.
 int get_pdf_page_count(const char* pdf_file) {
     char command[512];
+
     sprintf(command, ".\\mutool.exe info \"%s\" > pages.txt", pdf_file);
     int ret = system(command);
     if (ret != 0) {
@@ -31,9 +36,9 @@ int get_pdf_page_count(const char* pdf_file) {
 
 
 //Executes the powershell command to render PDF to .png images.
-bool render_pdf_pages_to_png(const char* pdf_file, int max_pages) {
+bool render_pdf_pages_to_png(const char* pdf_file) {
     char command[300];
-    for (int page = 1; page <= max_pages; page++) {
+    for (int page = 1; page <= file_count; page++) {
             sprintf(command, ".\\mutool.exe draw -o output_%d.png \"%s\" %d", 
                     page, pdf_file, page);
         if (system(command) != 0) {
@@ -62,12 +67,15 @@ bool png_to_pgm_format() {
             return 0; //returns false
         }
         fprintf(ptr_to_outputfile, "P2\n%d %d\n255\n", width, height);
-        for (int j = 0; j < height; j++) {
-            for (int i = 0; i < width; i++) {
-                int index = (j * width + i) * channels;
-                int R = img[index], G = img[index + 1], B = img[index + 2];
-                int gray = round(0.299 * R + 0.587 * G + 0.114 * B);
-                fprintf(ptr_to_outputfile, "%d ", gray);
+
+        int index = -1, R = 0, G = 0, B = 0, gray_pixel = 0, bw_pixel = 0;
+        for (int row = 0; row < height; row++) {
+            for (int column = 0; column < width; column++) {
+                index = (row * width + column) * channels;
+                R = img[index], G = img[index + 1], B = img[index + 2];
+                gray_pixel = round(0.299 * R + 0.587 * G + 0.114 * B);
+                bw_pixel = (gray_pixel >= THRESHOLD) ? 255 : 0; //THRESHOLD = 128
+                fprintf(ptr_to_outputfile, "%d ", bw_pixel);
             }
             fprintf(ptr_to_outputfile, "\n");
         }

@@ -4,9 +4,9 @@ A terminal program to reinforce learning using the Feynman learning method. C mi
 
 ## Proposed feature list:
 
-- [ ] Input as raw text / (pdf OCR ?)
+- [] Input as raw text / (pdf OCR ?)
 
-- [ ] Input as typed text
+- [x] Input as typed text
 
 - [ ] Speech recognition?
 
@@ -18,3 +18,8 @@ A terminal program to reinforce learning using the Feynman learning method. C mi
 
 ### More to be added
 
+## How to use the program
+1. Clone the repo and unzip and open
+2. In your shell terminal, type ```make``` to compile the program
+3. ```make run``` will compile and run the program
+4. To cleanup, execute ```make clean``` to remove the generated files.

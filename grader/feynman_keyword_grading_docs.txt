@@ -1,0 +1,91 @@
+
+Project: Feynman Keyword Grading System
+
+This project implements a simple C-based grading system using the Feynman Technique. 
+It compares a list of key concepts from a CSV file with a user-provided answer list 
+and grades the user based on how many keywords match.
+
+======================================================================
+File: grading.h
+======================================================================
+
+Purpose:
+    Header file for grading-related functionalities.
+
+Data Structures:
+    GradeBoundary
+        typedef struct {
+            char grade;
+            int min_percentage;
+        } GradeBoundary;
+
+        Represents a grade and the minimum percentage required for it.
+
+Functions:
+    void configure_grading_scale(GradeBoundary *scale);
+        Allows the user to modify the grading scale via console input.
+
+    char calculate_grade(int correct, int total, GradeBoundary *scale);
+        Returns the grade based on the number of correct answers and the grading scale.
+
+======================================================================
+File: grading.c
+======================================================================
+
+Purpose:
+    Implements grading functions and the user interface for grading.
+
+Key Functions:
+    - Implements:
+        - configure_grading_scale
+        - calculate_grade
+
+    - Includes main() function that:
+        - Prompts for grading scale preference.
+        - Reads answer key and user answers from CSV.
+        - Calculates and prints number of correct answers, percentage, and grade.
+
+======================================================================
+File: matching.h
+======================================================================
+
+Purpose:
+    Header file for answer matching and data preparation.
+
+Data Structures:
+    AnswerList
+        typedef struct {
+            char **answers;
+            int count;
+        } AnswerList;
+
+        Holds an array of answers and the total number of answers.
+
+Functions:
+    AnswerList read_answers(const char *filename);
+        Reads and parses a comma-separated answer list from a file.
+
+    int count_matches(AnswerList key, AnswerList user);
+        Compares key and user answer lists, returns number of matches.
+
+    void to_lower(char *str);
+        Converts a string to lowercase.
+
+    void free_answers(AnswerList list);
+        Frees memory used by an AnswerList.
+
+======================================================================
+File: matching.c
+======================================================================
+
+Purpose:
+    Implements the functions declared in matching.h.
+
+Key Functions:
+    - Implements:
+        - read_answers
+        - count_matches
+        - to_lower
+        - free_answers
+
+    - Uses qsort and bsearch with strcasecmp for case-insensitive matching.

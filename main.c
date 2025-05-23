@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include "ascii.h"
 #include "text_processor.h"
+#include "grader/grading.h"
 
 int main(void) {
     logo();
@@ -28,6 +29,42 @@ int main(void) {
             printf("Invalid choice. Exiting.\n");
             return 1;
     }
+
+    // After CSVs are created, run grading
+    char option;
+    GradeBoundary current_scale[10];
+    memcpy(current_scale, default_grading_scale, num_grades * sizeof(GradeBoundary));
+
+    printf("\nGrading System\n");
+    printf("1. Use default grading scale\n");
+    printf("2. Configure custom grading scale\n");
+    printf("Choose option: ");
+    scanf(" %c", &option);
+    getchar();
+    if (option == '2') {
+        configure_grading_scale(current_scale);
+    }
+
+    AnswerList key = read_answers("reference.csv");
+    AnswerList user = read_answers("user_input.csv");
+
+    if (key.answers && user.answers) {
+        int matches = count_matches(key, user);
+        if (matches >= 0) {
+            printf("\nResults:\n");
+            printf("Correct answers: %d/%d\n", matches, key.count);
+            int percentage = (matches * 100) / key.count;
+            printf("Percentage: %d%%\n", percentage);
+            char grade = calculate_grade(matches, key.count, current_scale);
+            printf("Grade: %c\n", grade);
+        } else {
+            printf("Error: Answer counts don't match!\n");
+        }
+    } else {
+        printf("Error reading files!\n");
+    }
+    free_answers(key);
+    free_answers(user);
 
     return 0;
 }

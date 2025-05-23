@@ -1,0 +1,150 @@
+ANSWER CHECKING SYSTEM DOCUMENTATION
+===================================
+
+FILE STRUCTURE
+--------------
+1. matching.h/c - Handles answer comparison logic
+2. grading.h/c - Manages grade calculation
+3. main.c - Implements the user interface
+
+CORE COMPONENTS
+---------------
+
+1. MATCHING MODULE (matching.h/c)
+
+Data Structures:
+----------------
+typedef struct {
+    char **answers;  // Dynamic array of answer strings
+    int count;       // Number of answers
+} AnswerList;
+
+Key Functions:
+--------------
+a) AnswerList read_answers(const char *filename)
+   - Reads comma-separated answers from file
+   - Performs:
+     * File opening validation
+     * Comma counting to determine answer count
+     * String trimming (removes whitespace)
+     * Case normalization (converts to lowercase)
+     * Dynamic memory allocation for strings
+
+b) int count_matches(AnswerList key, AnswerList user)
+   - Compares student answers against answer key
+   - Features:
+     * Validates equal answer counts
+     * Sorts answers for efficient searching
+     * Uses binary search (O(log n) per answer)
+     * Case-insensitive comparison
+
+c) void free_answers(AnswerList list)
+   - Safely deallocates memory
+   - Frees each string and the pointer array
+
+2. GRADING MODULE (grading.h/c)
+
+Data Structures:
+----------------
+typedef struct {
+    char grade;        // Letter grade (e.g., 'A')
+    int min_percentage; // Minimum percentage required
+} GradeBoundary;
+
+Default Configuration:
+---------------------
+static GradeBoundary default_scale[] = {
+    {'S', 90}, {'A', 80}, {'B', 70}, 
+    {'C', 60}, {'D', 50}, {'F', 0}
+};
+
+Key Functions:
+--------------
+a) void configure_grading_scale(GradeBoundary *scale)
+   - Interactive grade scale setup
+   - Guides user through:
+     * Grade letter input
+     * Percentage boundary specification
+     * Validates descending order
+
+b) char calculate_grade(int correct, int total, GradeBoundary *scale)
+   - Determines final grade
+   - Calculates percentage score
+   - Matches against grade boundaries
+   - Returns '?' for invalid inputs
+
+3. MAIN PROGRAM (main.c)
+
+Workflow:
+---------
+1. Presents grading scale options:
+   a) Use default scale
+   b) Configure custom scale
+
+2. Collects filenames for:
+   a) Answer key
+   b) Student answers
+
+3. Executes core operations:
+   a) Reads files
+   b) Counts matches
+   c) Calculates grade
+   d) Displays results
+
+4. Performs cleanup:
+   a) Memory deallocation
+   b) Error handling
+
+MEMORY MANAGEMENT
+-----------------
+- Uses dynamic allocation for answer storage
+- strdup() for string copying
+- Comprehensive cleanup in free_answers()
+- No memory leaks (Valgrind verified)
+
+ERROR HANDLING
+--------------
+- File open failures
+- Answer count mismatches
+- Invalid percentage inputs
+- Empty/missing files
+
+COMPILATION INSTRUCTIONS
+------------------------
+1. Compile all components:
+   gcc -o grader main.c matching.c grading.c
+
+2. Run the program:
+   ./grader
+
+SAMPLE USAGE
+------------
+1. Create answer key file (key.csv):
+   A,B,C,D,A
+
+2. Create student answers (student.csv):
+   A,B,X,D,Y
+
+3. Program output:
+   Correct answers: 3/5
+   Percentage: 60%
+   Grade: C
+
+CUSTOMIZATION OPTIONS
+---------------------
+1. Modify DEFAULT_GRADES in grading.h
+2. Change CASE_SENSITIVE flag in matching.h
+3. Adjust MAX_ANSWERS constant for larger tests
+
+PERFORMANCE CHARACTERISTICS
+--------------------------
+- File reading: O(n)
+- Answer matching: O(n log n)
+- Grade calculation: O(1)
+- Memory usage: O(n)
+
+LIMITATIONS
+-----------
+- Maximum 1024 characters per CSV line
+- Fixed maximum grade tiers (modifiable)
+- No support for weighted questions

@@ -1,9 +1,9 @@
 #include "template_matching.h"
 
-int valid_ascii[95];
-int templates_raw[95][20][20];        // original pixel arrays
-Point template_pts[95][MAX_POINTS];   // extracted black-pixel coordinates
-int template_pt_count[95];            // how many points per template
+int valid_ascii[94];
+int templates_raw[94][20][20];        // original pixel arrays
+Point template_pts[94][MAX_POINTS];   // extracted black-pixel coordinates
+int template_pt_count[94];            // how many points per template
 
 // Precompute point lists from each loaded template
 void extract_template_points(int idx) {
@@ -23,7 +23,7 @@ void load_templates() {
     int idx = 0;
     for (int c = 33; c <= 126; c++) valid_ascii[idx++] = c;
 
-    for (int t = 0; t < 95; t++) {
+    for (int t = 0; t < 94; t++) {
         char fname[64];
         sprintf(fname, "CharacterTemplates/template_ord%d.pgm", valid_ascii[t]);
         FILE *fp = fopen(fname, "r");
@@ -120,7 +120,7 @@ void template_matching() {
 
         double best_dist = DBL_MAX;
         char best_char = '?';
-        for (int t = 0; t < 95; t++) {
+        for (int t = 0; t < 94; t++) {
             int nt = template_pt_count[t];
             if (nt == 0) continue;
             double d = modified_hausdorff(letter_pts, letter_n,

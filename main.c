@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include "ascii.h"
 #include "text_processor.h"
+#include "pdf_processor.h"
 #include "grader/grading.h"
 
 int main(void) {
@@ -14,7 +15,8 @@ int main(void) {
     printf("Choose input method:\n");
     printf("1. Manual input (type text)\n");
     printf("2. File input (provide text files)\n");
-    printf("Enter your choice (1 or 2): ");
+    printf("3. PDF input mode (provide a pdf)\n\n");
+    printf("Enter your choice (1 or 2 or 3): ");
     scanf("%d", &choice);
     getchar(); 
 
@@ -23,6 +25,10 @@ int main(void) {
             manual_input_mode();
             break;
         case 2:
+            file_input_mode();
+            break;
+        case 3:
+            pdf_input_mode();
             file_input_mode();
             break;
         default:

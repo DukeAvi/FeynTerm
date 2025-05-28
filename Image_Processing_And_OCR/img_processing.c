@@ -12,9 +12,10 @@
 #endif
 
 extern int file_count;
+extern const char* pdf_file;
 
 //Computes the number of pages in a given PDF.
-int get_pdf_page_count(const char* pdf_file) {
+int get_pdf_page_count() {
     char command[512];
     #ifdef _WIN32
     sprintf(command, "%s info \"%s\" > pages.txt", MUTOOLEXE, pdf_file);
@@ -50,7 +51,7 @@ int get_pdf_page_count(const char* pdf_file) {
 
 
 //Executes the command to render PDF to .png images.
-bool render_pdf_pages_to_png(const char* pdf_file) {
+bool render_pdf_pages_to_png() {
     char syscmd[512];
     #ifdef _WIN32
     sprintf(syscmd, "cd Image_Processing_And_OCR && mutool.exe draw -F txt -o tmp_resources.txt input.pdf > nul 2>&1");

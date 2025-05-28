@@ -78,9 +78,9 @@ static double modified_hausdorff(Point *A, int na, Point *B, int nb) {
 }
 
 void template_matching() {
-    FILE *out = fopen("output.txt", "r");
+    FILE *out = fopen("Image_Processing_And_OCR/output.txt", "r");
     if (!out){
-        rename("tmp_resources.txt", "output.txt");
+        rename("Image_Processing_And_OCR/tmp_resources.txt", "Image_Processing_And_OCR/output.txt");
         return;
     }
 

@@ -4,19 +4,15 @@ A terminal program to reinforce learning using the Feynman learning method. C mi
 
 ## Proposed feature list:
 
-- [] Input as raw text / (pdf OCR ?)
+- [x] Input as raw text
+
+- [x] Input as PDF using OCR
 
 - [x] Input as typed text
 
-- [ ] Speech recognition?
+- [x] Comparison of those two 
 
-- [ ] Comparison of those two 
-
-- [ ] Scoring system (Perfect/satisfactory/unsatisfactory...)
-
-- [ ] Marking out missed keywords
-
-### More to be added
+- [x] Scoring system (Perfect/satisfactory/unsatisfactory...)
 
 ## How to use the program
 1. Clone the repo and unzip and open

@@ -45,3 +45,7 @@
 *.gen
 *.generated
 *.csv
+
+# User files
+*.pdf
+*.txt

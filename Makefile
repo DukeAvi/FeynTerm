@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -g
-TARGET = memory_checker
+TARGET = feynterm
 SRCS = main.c text_processor.c pdf_processor.c ignore_words.c grader/grading.c grader/matching.c Image_Processing_And_OCR/img_processing.c Image_Processing_And_OCR/character_segmentation.c Image_Processing_And_OCR/template_matching.c 
 
 OBJS = $(SRCS:.c=.o)

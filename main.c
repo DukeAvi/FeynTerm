@@ -29,7 +29,24 @@ int main(void) {
             break;
         case 3:
             pdf_input_mode();
-            file_input_mode();
+            // Directly prompt for user's answer file and write to CSV
+            {
+                char user_file[Max_Filename_Length];
+                char user_input[Max_Words * Max_Words_Length];
+                printf("Enter the filename for the user's answer: ");
+                fgets(user_file, sizeof(user_file), stdin);
+                user_file[strcspn(user_file, "\n")] = '\0';
+                FILE *file = fopen(user_file, "r");
+                if (!file) {
+                    printf("Error opening file %s for reading!\n", user_file);
+                    return 1;
+                }
+                size_t len = fread(user_input, 1, sizeof(user_input) - 1, file);
+                user_input[len] = '\0';
+                fclose(file);
+                write_toCSV("user_input.csv", user_input);
+                printf("\nCSV file 'user_input.csv' created successfully.\n");
+            }
             break;
         default:
             printf("Invalid choice. Exiting.\n");
